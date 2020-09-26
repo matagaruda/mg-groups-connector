@@ -1,0 +1,14 @@
+{
+  "name": "mg-groups-connector",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --inspect node_modules/@google-cloud/functions-framework --target=forwardToForum"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^1.7.1",
+    "axios": "^0.20.0",
+    "turndown-async": "^0.0.2"
+  }
+}
