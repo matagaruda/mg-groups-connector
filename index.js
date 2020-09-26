@@ -37,7 +37,7 @@ exports.forwardToForum = async (req, res) => {
     )[0];
 
     let md = await turndown.turndown(msg);
-    md += `\n\n[Original Post](${origin})`;
+    md += `\n\n[Original Post](${origin}@googlegroups.com)`;
 
     axios
       .post(
