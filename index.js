@@ -20,8 +20,8 @@ exports.forwardToForum = async (req, res) => {
 
     const html = req.body.html;
     if (html.match(/gmail_quote/g) !== null) {
-      // Filter if it's a thread reply, indicated by `gmail_quote` class,
-      // Then do not forward
+      // Do not forward if it's a thread reply
+      // indicated by `gmail_quote` class,
       return res.sendStatus(404);
     }
 
@@ -30,7 +30,15 @@ exports.forwardToForum = async (req, res) => {
     const token = process.env.TOKEN;
     const title = req.body.subject;
     const msg = html.split("-- <br />")[0];
-    const md = await turndown.turndown(msg);
+
+    // Parse origin URL
+    const origin = html.match(
+      /(https?:\/\/(.+?\.)?google\.com(\/[A-Za-z0-9\-\._~:\/\?#\[\]@!$&'\(\)\*\+,;\=]*)?)/g
+    )[0];
+
+    let md = await turndown.turndown(msg);
+    md += `\n\n[Original Post](${origin})`;
+
     axios
       .post(
         endpoint,
