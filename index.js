@@ -19,16 +19,20 @@ exports.forwardToForum = async (req, res) => {
     }
 
     const html = req.body.html;
-    if (html.match(/gmail_quote/g) !== null) {
+    const title = req.body.subject;
+    if (
+      html.match(/gmail_quote/g) !== null ||
+      title.match(/email/gi) !== null
+    ) {
       // Do not forward if it's a thread reply
       // indicated by `gmail_quote` class,
+      console.log(`message's filtered: contain ${title} or 'gmail_quote'`);
       return res.sendStatus(404);
     }
 
     const turndown = new turndownService();
     const endpoint = process.env.ENDPOINT;
     const token = process.env.TOKEN;
-    const title = req.body.subject;
     const msg = html.split("-- <br />")[0];
 
     // Parse origin URL
